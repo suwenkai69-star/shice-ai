@@ -1,0 +1,2 @@
+# shice-ai
+shice-ai
