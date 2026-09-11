@@ -1,0 +1,33 @@
+食策AI V0.5.0-R1 — Data Integrity Fix 使用说明
+
+一、启动
+Windows：双击 启动_食策AI_Windows.bat
+macOS / Linux：运行 启动_食策AI_macOS_Linux.sh
+或直接：python run.py
+浏览器：http://127.0.0.1:8765
+
+二、本版定位
+V0.5.0-R1 只修 Data Foundation 数据完整性，不做 UI 大改、不碰 AI 重构、税务、BOM、库存或平台自动同步。
+
+三、重要导入规则
+1. 支持 UTF-8 / UTF-8 BOM / GB18030 CSV。
+2. 日期 2026/8/7、2026-8-7 会标准化为 2026-08-07。
+3. 同一逻辑记录重复上传不会重复累计。
+4. 如果已有完整记录，而修正版缺少之前已有字段，系统会拒绝本次更新并保留旧数据。请上传完整修正版，不会静默清空原值。
+5. API 指定渠道与文件内渠道冲突时会拒绝导入。
+6. 空文件或损坏 JSON 会显示失败，但仍保留失败 Import Batch 供审计。
+
+四、备份/清空/恢复
+服务端模式：
+- 导出备份：包含 legacy state + Schema V2 数据 + SQLite 快照。
+- 清空全部数据：会清空当前门店的 legacy 与 V2 经营/导入数据；不会删除渠道字典和数据库结构。
+- 导入 R1 完整备份：会先校验文件，恢复前自动保留 pre_restore 安全备份。
+
+直接双击 HTML 的本地回退模式仍只保存浏览器 localStorage 状态；完整 V2 备份/恢复必须通过 FastAPI 服务端模式使用。
+
+五、结算费用日期
+结算周期费用不会自动归到结算周期最后一天。无法确定具体营业日期时 business_date 保持为空，避免未来每日利润错误。
+
+六、验收资料
+V0.5.0-R1_GATE_REVIEW.md
+V0.5.0-R1_FINAL_VERIFICATION.txt

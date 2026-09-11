@@ -1,0 +1,47 @@
+食策AI V0.5.0-R1 — Data Integrity Fix 最终验收记录
+Date: 2026-09-01
+
+Scope:
+- 修 V0.5.0 数据完整性问题
+- 不进入 V0.5.1
+- 不做 UI 大改 / AI 重构 / 税务 / BOM / 库存 / 平台自动抓取
+
+Fresh automated verification:
+- pytest: 58 passed, 0 failed, 2 FastAPI on_event deprecation warnings
+- python compileall: PASS
+- front-end JS node --check: PASS
+
+Fresh real V0.4 upgrade verification:
+- schema 1 -> schema 2: PASS
+- store fields preserved: PASS
+- app_state preserved: PASS
+- channels count = 9
+- canonical V0.4 backup equals exact pre-upgrade DB: PASS
+- timestamped V0.4 backup created: PASS
+
+Fresh manual data-integrity verification:
+- full sales import: COMPLETED
+- incomplete correction: FAILED / rejected=1
+- original gross_sales remains 1000.00
+- original customer_paid remains 900.00
+- settlement-period platform fee business_date = NULL
+- full backup format = shice-ai-full-v1
+- backup contains V2 sales
+- reset -> V2 sales count 0
+- restore -> V2 sales restored
+
+Actual FastAPI process smoke:
+- /api/health = 200
+- /api/state = 200
+- /api/v2/channels = 200
+- /api/backup = 200
+- standard channels = 9
+- backup contains sqlite snapshot = YES
+
+Browser QA limitation:
+- Chromium in this execution environment blocks both 127.0.0.1 and file:// with ERR_BLOCKED_BY_ADMINISTRATOR.
+- Therefore no browser E2E screenshot is claimed.
+- Static JS syntax, front-end contract tests, fallback regression, and real API process smoke were verified instead.
+
+Final status before archive packaging:
+PASS

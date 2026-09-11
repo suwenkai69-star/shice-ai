@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "app.py": {
+      "maxDuration": 60,
+      "excludeFiles": "{tests/**,samples/**,data/*.db,data/mini_uploads/**,static/**,__pycache__/**,.pytest_cache/**,**/*.pyc,**/*.pyo}"
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/mini/v1/internal/reminders/dispatch",
+      "schedule": "0 * * * *"
+    }
+  ]
+}
